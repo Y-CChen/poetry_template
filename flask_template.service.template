@@ -1,0 +1,12 @@
+[Unit]
+Description=flask_template
+After=multi-user.target
+
+[Service]
+Type=idle
+WorkingDirectory=/home/flask_template
+ExecStart=/home/flask_template/.venv/bin/gunicorn wsgi:app --bind 0.0.0.0:8989 --workers=1
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,9 @@
+class Config(object):
+    # base
+    APP_HOST = "0.0.0.0"
+    APP_PORT = 8989
+    SERVER_HTTP_MODE = "http"
+
+    # sql
+    SQLALCHEMY_DATABASE_URI = "[Database URI]"
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -3,6 +3,9 @@ import logging
 
 from rich.logging import RichHandler
 
+from config import Config
+from flask_template import make_app
+
 
 def _main():
     try:
@@ -10,8 +13,15 @@ def _main():
         logger = logging.getLogger()
         logger.setLevel(logging.getLevelName(parsed_args.logging_level.upper()))
         logger.addHandler(RichHandler(rich_tracebacks=True))
+        app, with_app_context_wraps = make_app(Config, False)
+        app.run(
+            host=app.config["APP_HOST"], port=app.config["APP_PORT"], debug=True, use_reloader=False
+        )
+    except KeyboardInterrupt:
+        pass
     except Exception as e:
         logging.exception(e)
+        raise
 
 
 def _parse_args(args=None):
