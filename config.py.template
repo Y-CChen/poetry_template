@@ -2,6 +2,7 @@ class Config(object):
     # base
     APP_HOST = "0.0.0.0"
     APP_PORT = 8989
+    APP_URL_PREFIX = "/flask_template/api/v01"
     SERVER_HTTP_MODE = "http"
 
     # sql
