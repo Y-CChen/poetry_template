@@ -1,3 +1,1 @@
-# poetry_template
-
-https://pypi.org/project/poetry/
+# flask_template

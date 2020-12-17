@@ -1,4 +1,4 @@
-from poetry_template import __version__
+from flask_template import __version__
 
 
 def test_version():

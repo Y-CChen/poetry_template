@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "poetry_template"
+name = "flask_template"
 version = "0.1.0"
 description = ""
 authors = []
