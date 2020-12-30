@@ -24,7 +24,7 @@ def test_sitemap(client, config):
 def test_echo(client, config):
     url = "{}/echo".format(config["APP_URL_PREFIX"])
     assert flask.url_for("flask_template.resources.echo._post") == url
-    data = {"timestamp": datetime.utcnow().isoformat()}
+    data = {"timestamp": datetime.utcnow().isoformat(timespec="seconds")}
     response = client.post(url, json=data)
     json = response.get_json(force=True)
     assert json == data
