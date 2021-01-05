@@ -34,5 +34,6 @@ def make_app(config, for_manage) -> Flask:
     url_prefix = app.config["APP_URL_PREFIX"]
     app.register_blueprint(resources.sitemap.blueprint, url_prefix=url_prefix)
     app.register_blueprint(resources.echo.blueprint, url_prefix="{}/echo".format(url_prefix))
+    app.register_blueprint(resources.ecpay.blueprint, url_prefix="{}/ecpay".format(url_prefix))
 
     return App
