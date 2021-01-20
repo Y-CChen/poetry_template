@@ -1,4 +1,5 @@
 from datetime import datetime
+from urllib.parse import urlencode
 
 import flask
 from flask_template import ecpay_logistic_sdk, ecpay_payment_sdk
@@ -75,6 +76,7 @@ def _post_payment():
     html = ecpay_payment.gen_html_post_form(action_url, final_order_params)
     return html
 
+
 @blueprint.route("/payment/return/", methods=["POST"])
 def _post_payment_return():
     ecpay_payment = ecpay_payment_sdk.ECPayPaymentSdk(
@@ -86,6 +88,43 @@ def _post_payment_return():
     if flask.request.form["CheckMacValue"] != check_mac_value:
         return "|FAIL"
     return "1|OK"
+
+
+@blueprint.route("/logistic/cvs/map", methods=["GET"])
+def _get_logistic_cvs_map():
+    args = flask.request.args
+    cvs_map_params = {
+        "MerchantTradeNo": datetime.utcnow().strftime("T%Y%m%d%H%M%S"),  # String(20)
+        "LogisticsType": "CVS",
+        "LogisticsSubType": ecpay_logistic_sdk.LogisticsSubType[args["logistic_sub_type"]],
+        "IsCollection": ecpay_logistic_sdk.IsCollection[
+            "YES" if args.get("is_collection", 0) == 1 else "NO"
+        ],
+        "ServerReplyURL": "{}{}?{}".format(
+            flask.current_app.config["NGROK_URL"],
+            flask.url_for("flask_template.resources.ecpay._post_logistic_cvs_map_server_reply"),
+            urlencode({"client_reply_url": args["client_reply_url"]}),
+        ),  # String(200)
+        "ExtraData": "",
+        # "Device": ecpay_logistic_sdk.Device["PC"],
+    }
+    ecpay_logistic = ecpay_logistic_sdk.ECPayLogisticSdk(
+        MerchantID=flask.current_app.config["ECPAY_MERCHANT_ID"],
+        HashKey=flask.current_app.config["ECPAY_HASH_KEY"],
+        HashIV=flask.current_app.config["ECPAY_HASH_IV"],
+    )
+    final_cvs_map_params = ecpay_logistic.cvs_map(cvs_map_params)
+    action_url = "https://logistics-stage.ecpay.com.tw/Express/map"  # development
+    # action_url = "https://logistics.ecpay.com.tw/Express/map"  # production
+    html = ecpay_logistic.gen_html_post_form(action_url, final_cvs_map_params)
+    return html
+
+
+@blueprint.route("/logistic/cvs/map/server_reply/", methods=["POST"])
+def _post_logistic_cvs_map_server_reply():
+    client_reply_url = flask.request.args["client_reply_url"]
+    cvs_store_id = flask.request.form["CVSStoreID"]
+    return flask.redirect("{}?cvs_store_id={}".format(client_reply_url, cvs_store_id))
 
 
 @blueprint.route("/logistic/cvs/", methods=["POST"])
