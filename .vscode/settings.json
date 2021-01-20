@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
-        "ecpay"
+        "ecpay",
+        "ngrok"
     ],
     "python.testing.pytestArgs": [
         "tests"
