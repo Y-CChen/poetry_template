@@ -3,8 +3,15 @@ class Config(object):
     APP_HOST = "0.0.0.0"
     APP_PORT = 8989
     APP_URL_PREFIX = "/flask_template/api/v01"
+    NGROK_URL = "[ngrok URL]"
     SERVER_HTTP_MODE = "http"
 
     # sql
     SQLALCHEMY_DATABASE_URI = "[Database URI]"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # ecpay
+    # ECPAY_MERCHANT_ID = "2000132"  # OTP
+    ECPAY_MERCHANT_ID = "2000214"
+    ECPAY_HASH_KEY = "5294y06JbISpM5x9"
+    ECPAY_HASH_IV = "v77hoKGq4kWxNNIS"
