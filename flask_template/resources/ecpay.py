@@ -124,7 +124,20 @@ def _get_logistic_cvs_map():
 def _post_logistic_cvs_map_server_reply():
     client_reply_url = flask.request.args["client_reply_url"]
     cvs_store_id = flask.request.form["CVSStoreID"]
-    return flask.redirect("{}?cvs_store_id={}".format(client_reply_url, cvs_store_id))
+    cvs_store_name = flask.request.form["CVSStoreName"]
+    cvs_address = flask.request.form["CVSAddress"]
+    return flask.redirect(
+        "{}?{}".format(
+            client_reply_url,
+            urlencode(
+                {
+                    "cvs_store_id": cvs_store_id,
+                    "cvs_store_name": cvs_store_name,
+                    "cvs_address": cvs_address,
+                }
+            ),
+        )
+    )
 
 
 @blueprint.route("/logistic/cvs/", methods=["POST"])
